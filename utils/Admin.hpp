@@ -2,7 +2,7 @@
 #include <string>
 using namespace std;
 
-class Librarian {
+class Admin {
     private:
         string adminName;
         string adminId;
