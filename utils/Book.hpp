@@ -1,7 +1,6 @@
-#include <iostream>
-#include <string>
-using namespace std;
-
+#ifndef Book_hpp
+#define Book_hpp
+#include "Common.hpp"
 class Book {
     private:
         static int bookAmount;
@@ -25,3 +24,5 @@ class Book {
 
         //write a function that upadte the borrowedBook when a borrow / return transaction is made;
 };
+
+#endif

@@ -1,7 +1,6 @@
-#include <iostream>
-#include <string>
-using namespace std;
-
+#ifndef User_hpp
+#define User_hpp
+#include "Common.hpp"
 class User {
     private:
         string userName;
@@ -20,3 +19,4 @@ class User {
 
         //write a function that display the user information
 };
+#endif

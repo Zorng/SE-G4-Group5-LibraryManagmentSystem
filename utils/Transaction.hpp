@@ -1,7 +1,6 @@
-#include <iostream>
-#include <string>
-using namespace std;
-
+#ifndef Transaction_hpp
+#define Transaction_hpp
+#include "Common.hpp"
 class Transaction {
     private:
         string trasanctionId;
@@ -15,3 +14,4 @@ class Transaction {
         //write a function that update the user transaction history whenever the transaction is made;
 
 };
+#endif
