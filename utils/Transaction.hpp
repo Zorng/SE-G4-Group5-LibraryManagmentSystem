@@ -1,7 +1,6 @@
-#include <iostream>
-#include <string>
-using namespace std;
-
+#ifndef Transaction_hpp
+#define Transaction_hpp
+#include "Common.hpp"
 class TransactionNode{
     private:
         string transactionID;
@@ -107,3 +106,4 @@ class TransactionList{
         }
 
 };
+#endif

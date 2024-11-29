@@ -1,6 +1,6 @@
-#include <iostream>
-#include <string>
-using namespace std;
+#ifndef Admin_hpp
+#define Admin_hpp
+#include "Common.hpp"
 
 class Admin {
     private:
@@ -34,3 +34,5 @@ class Admin {
     //transaction related functions
         //write a function that let the librarian confirm a transaction;  ***
 };
+
+#endif
