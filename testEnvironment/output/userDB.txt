@@ -1,6 +1,0 @@
-Alice 001 pass123 1995-05-20
-Bob 002 pass456 1993-08-15
-Charlie 003 pass789 1998-01-25
-Alice 001 pass123 1995-05-20
-Bob 002 pass456 1993-08-15
-Charlie 003 pass789 1998-01-25
