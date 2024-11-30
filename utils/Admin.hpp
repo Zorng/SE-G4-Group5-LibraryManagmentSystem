@@ -1,8 +1,6 @@
-#include <iostream>
-#include <string>
-#include <sstream>
-#include <fstream>
-using namespace std;
+#ifndef Admin_hpp
+#define Admin_hpp
+#include "Common.hpp"
 
 class AdminNode {
 private:
@@ -153,7 +151,6 @@ public:
             cout << "Admin with ID: " << adminId << " not found" << endl;
         }
     }
-
     void saveAdmin(string filename){
         ofstream saveAdminToFile(filename);
         if(!saveAdminToFile){
@@ -201,3 +198,5 @@ public:
         loadAdmin.close();
     }
 };
+#endif
+
