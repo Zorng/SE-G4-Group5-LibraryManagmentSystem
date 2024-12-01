@@ -22,6 +22,7 @@ class BookNode{
         //Allow access to BookList class
         friend class BookList;     
 };
+
 class BookList {
     private:
         BookNode* head;
@@ -117,6 +118,25 @@ class BookList {
                 }
                 current = current->next;
             }
+        }
+
+        void readBookDB(string bookDB){
+            ifstream file(bookDB);
+            if(!file.is_open()){
+                cerr << "Unable to open file: " << bookDB << endl;
+                return;
+            }
+
+            string line, title, author, pbDate;
+            while (getline(file, line)){
+                stringstream ss(line);
+                getline(ss, title, ',');
+                getline(ss, author, ',');
+                getline(ss, pbDate, ',');
+                insertBack(title, author, pbDate);
+            }
+
+            file.close();
         }
 };
 #endif
