@@ -1,58 +1,122 @@
 #ifndef Book_hpp
 #define Book_hpp
 #include "Common.hpp"
-class Book {
+
+class BookNode{
     private:
-        static int bookAmount;
-        static int borrowedAmount;
-        //currently available book = bookAmount - borrowedBook;
-        string primaryKey;
-        string title;
-        string authorName;
-        string publishedYear;
-        string isbn;
-        string summary;
-        bool vailable; 
+        string bookID;
+        string bookTitle;
+        string bookAuthor;
+        string bookPbDate;
+        BookNode* prev;
+        BookNode* next;
     public:
         //create a contructor for the class;
-        Book(string primaryKey, string title, string authorName, string publishedYear, string isbn, string summary, bool vailable=true){
-            this->primaryKey=primaryKey;
-            this->title=title;
-            this->authorName=authorName;
-            this->publishedYear=publishedYear;
-            this->isbn=isbn;
-            this->summary=summary;
-            // vailable(true){bookAmount++;}
-        }        
+        BookNode(string bookID, string bookTitle, string bookAuthot, string bookPbDate){
+            this->bookID=bookID;
+            this->bookTitle=bookTitle;
+            this->bookAuthor=bookAuthor;
+            this->bookPbDate=bookPbDate;
+        }   
 
-        //write a function that show book information (except book summary);
-        void showInfo() {
-            cout << "Primary Key: " << primaryKey << endl;
-            cout << "Title: " << title << endl;
-            cout << "Author: " << authorName << endl;
-            cout << "Published Year: " << publishedYear << endl;
-            cout << "ISBN: " << isbn << endl;
-            // cout << "Available: " << (available ? "Yes" : "No") << endl;
-        } // Still fixing??
+        //Allow access to BookList class
+        friend class BookList;     
+};
+class BookList {
+    private:
+        BookNode* head;
+        BookNode* tail;
+        int length;
 
-        //write a fucntion that show book summary;
-        void showSummary() {
-            cout << "Summary: " << summary << endl;
-        } //fixing use file??
-
-        //write a function that update the bookAmount when a book is added;
-        void saveToFile() {
-            ofstream file("books.txt", ios::app);
-            if (file.is_open()) {
-                file << primaryKey << "," << title << "," << authorName << "," << publishedYear << "," 
-                    << isbn << "," << summary << "," /*<< available << endl*/;
-                file.close();
-            } else {
-                cout << "Error!!" << endl;
-            }
+        string generateID(){
+            int counter = 1;
+            return "IDBOOK" + to_string(counter++);
+        }
+    public:
+        BookList(){
+            head=nullptr;
+            tail=nullptr;
+            length=0;
         }
 
-        //write a function that upadte the borrowedBook when a borrow / return transaction is made;
-};
+        int getLength() {
+            return length;
+        }
 
+        void insertFront(string title, string author, string pbDate){
+            string id = generateID();
+            BookNode* newNode = new BookNode(id, title, author, pbDate);
+            if(!head){
+                head = tail = newNode;
+            } else{
+                newNode->next = head;
+                head->prev = newNode;
+                head = newNode;
+            }
+            ++length;
+        }        
+
+        void insertBack(string title, string author, string pbDate){
+            string id = generateID();
+            BookNode* newNode = new BookNode(id, title, author, pbDate);
+            if(!tail){
+                head = tail = newNode;
+            } else {
+                tail->next = newNode;
+                newNode->prev = tail;
+                tail = newNode;
+            }
+            ++length;
+        }
+
+        void removeFront(){
+            if(!head) return;
+            BookNode* temp = head;
+            head = head->next;
+            if(head){
+                head->prev = nullptr;
+            } else{
+                tail = nullptr;
+            }
+            delete temp;
+            --length;
+        }
+
+        void removeBack(){
+            if (!tail) return;
+            BookNode* temp = tail;
+            tail = tail->prev;
+            if (tail){
+                tail->next = nullptr;
+            }else{
+                head = nullptr;
+            }
+            delete temp;
+            --length;
+        }
+
+        void removeID(string id){
+            BookNode* current = head;
+            while (current){
+                if (current->bookID == id){
+                    if(current->prev){
+                        current->prev->next = current->next;
+                    } else {
+                        head = current->next;
+                    }
+
+                    if (current->next){
+                        current->next->prev = current->prev;
+                    } else{
+                        tail = current->prev;
+                    }
+
+                    delete current;
+                    --length;
+                    return;
+                }
+                current = current->next;
+            }
+        }
+};
 #endif
