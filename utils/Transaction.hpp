@@ -44,7 +44,7 @@ class TransactionList{
             return length;
         }
 
-        void insertFront(string& transactionID, string itemID, string& actorID, string& time, string& type){
+        void insertFront(string& transactionID, string& itemID, string& actorID, string& time, string& type){
             TransactionNode* newNode = new TransactionNode(transactionID, itemID, actorID, time, type);
             if(head = nullptr){
                 head = tail = newNode;
@@ -56,7 +56,7 @@ class TransactionList{
             length++;
         }
 
-        void insertBack(string& transactionID, string itemID, string& actorID, string& time, string& type){
+        void insertBack(string& transactionID, string& itemID, string& actorID, string& time, string& type){
             TransactionNode* newNode = new TransactionNode(transactionID, itemID, actorID, time, type);
             if(tail = nullptr){
                 tail = head = newNode;
@@ -101,8 +101,42 @@ class TransactionList{
 
         }
 
-        void removeByID(){
+        void removeByID(string& transactionID){
+            TransactionNode* curr = head;
 
+            while(curr != nullptr){
+                if(curr->transactionID == transactionID){
+                    if(curr->prev != nullptr){
+                        curr->prev->next=curr->next;
+                    }else{
+                        head = curr->next;
+                    }
+                    if(curr->next != nullptr){
+                        curr->next->prev = curr->prev;
+                    }else{
+                        tail = curr->prev;
+                    }
+                    delete curr;
+                    length--;
+
+                    cout << "ID " << transactionID << " has been sucessfully deleted!";
+                }else{
+                    cout << "Invalid ID!" << endl;
+                }
+            }
+
+        }
+        void readTransactionDB(string& transactionDB){
+            fstream file("transactionDB.txt");
+
+            if(!file.is_open()){
+                cout << "Error opening file!" << endl;
+            }
+            string transactionID, itemID, actorID, time, type;
+            while(file << transactionID << itemID << actorID << time << type){
+                insertBack(transactionID, itemID, actorID, time, type);
+            }
+            file.close();
         }
 
 };
