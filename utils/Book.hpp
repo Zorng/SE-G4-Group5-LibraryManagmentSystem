@@ -8,15 +8,24 @@ class BookNode{
         string bookTitle;
         string bookAuthor;
         string bookPbDate;
+        string summary;
+        int totalAmount;
+        int borrowedAmount;
+        //totalAvailable = totalAmount - borrowedAmount
         BookNode* prev;
         BookNode* next;
     public:
-        //create a contructor for the class;
-        BookNode(string bookID, string bookTitle, string bookAuthot, string bookPbDate){
+        //constructor;
+        BookNode(string bookID, string bookTitle, string bookAuthot, string bookPbDate, string summary = "", int totalAmount = 0, int borrowedAmount = 0){
             this->bookID=bookID;
             this->bookTitle=bookTitle;
             this->bookAuthor=bookAuthor;
             this->bookPbDate=bookPbDate;
+            this->summary=summary;
+            this->totalAmount=totalAmount;
+            this->borrowedAmount=borrowedAmount;
+            this->prev = nullptr;
+            this->next = nullptr;
         }   
 
         //Allow access to BookList class
@@ -28,9 +37,10 @@ class BookList {
         BookNode* head;
         BookNode* tail;
         int length;
+        int counter = 1; //static counter
 
+        //Generate ID for each book
         string generateID(){
-            int counter = 1;
             return "IDBOOK" + to_string(counter++);
         }
     public:
@@ -44,9 +54,28 @@ class BookList {
             return length;
         }
 
-        void insertFront(string title, string author, string pbDate){
+        //function to display book information (without summary) by ID of the book
+        void showBookInfo(string id) {
+            BookNode* current = head;
+            while (current) {
+                if (current->bookID == id) {
+                    cout << "Book ID: " << current->bookID << endl;
+                    cout << "Title: " << current->bookTitle << endl;
+                    cout << "Author: " << current->bookAuthor << endl;
+                    cout << "Published Date: " << current->bookPbDate << endl;
+                    cout << "Total Amount: " << current->totalAmount << endl;
+                    cout << "Borrowed: " << current->borrowedAmount << endl;
+                    return;
+                }
+                current = current->next;
+            }
+            cout << "Book with ID " << id << " not found." << endl;
+        }
+
+
+        void insertFront(string title, string author, string pbDate, string summary = "", int totalAmount = 0){
             string id = generateID();
-            BookNode* newNode = new BookNode(id, title, author, pbDate);
+            BookNode* newNode = new BookNode(id, title, author, pbDate, summary, totalAmount, 0);
             if(!head){
                 head = tail = newNode;
             } else{
@@ -57,9 +86,9 @@ class BookList {
             ++length;
         }        
 
-        void insertBack(string title, string author, string pbDate){
+        void insertBack(string title, string author, string pbDate, string summary = "", int totalAmount = 0){
             string id = generateID();
-            BookNode* newNode = new BookNode(id, title, author, pbDate);
+            BookNode* newNode = new BookNode(id, title, author, pbDate, summary, totalAmount, 0);
             if(!tail){
                 head = tail = newNode;
             } else {
@@ -120,6 +149,7 @@ class BookList {
             }
         }
 
+        //Read book from file and add them to the list
         void readBookDB(string bookDB){
             ifstream file(bookDB);
             if(!file.is_open()){
@@ -127,13 +157,17 @@ class BookList {
                 return;
             }
 
-            string line, title, author, pbDate;
+            string line, title, author, pbDate, summary;
+            int totalAmount;
             while (getline(file, line)){
                 stringstream ss(line);
                 getline(ss, title, ',');
                 getline(ss, author, ',');
                 getline(ss, pbDate, ',');
-                insertBack(title, author, pbDate);
+                getline(ss, summary, ',');
+                ss >> totalAmount;
+
+                insertBack(title, author, pbDate, summary, totalAmount);
             }
 
             file.close();
