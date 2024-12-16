@@ -16,7 +16,7 @@ class BookNode{
         BookNode* next;
     public:
         //constructor;
-        BookNode(string bookID, string bookTitle, string bookAuthot, string bookPbDate, string summary = "", int totalAmount = 0, int borrowedAmount = 0){
+        BookNode(string bookID, string bookTitle, string bookAuthor, string bookPbDate, string summary = "", int totalAmount = 0, int borrowedAmount = 0){
             this->bookID=bookID;
             this->bookTitle=bookTitle;
             this->bookAuthor=bookAuthor;
@@ -171,6 +171,27 @@ class BookList {
             }
 
             file.close();
+        }
+
+        void saveBook(string filename){
+            ofstream savebookToFile(filename);
+            if(!savebookToFile){
+                cout << "File failed to open" << endl;
+                return;
+            }
+            BookNode* curr = head;
+            while(curr != nullptr){
+                savebookToFile << curr->bookID << ","
+                                << curr->bookTitle << ","
+                                << curr->bookAuthor << ","
+                                << curr->bookPbDate << ","
+                                << curr->totalAmount << ","
+                                << curr->borrowedAmount << endl;
+                                
+                curr = curr->next;
+            }
+            savebookToFile.close();
+            cout << "Save success" << endl;
         }
 };
 #endif
