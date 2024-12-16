@@ -27,20 +27,20 @@ class AdminList{
 private:
     AdminNode* head;
     AdminNode* tail;
-    int lenght;
+    int length;
 
     string generateAdminId(){
-        return "ADMIN" + to_string(lenght+1);
+        return "ADMIN" + to_string(length+1);
     }
 public:
     AdminList(){
         head = nullptr;
         tail = nullptr;
-        lenght = 0;
+        length = 0;
     }
 
-    int getLenght(){
-        return lenght;
+    int getLength(){
+        return length;
     }
 
     // insert front
@@ -54,7 +54,7 @@ public:
             head->prev = newNode;
             head = newNode;
         }
-        lenght++;
+        length++;
         // cout << "Admin added at front!" << endl;
     }
 
@@ -69,7 +69,7 @@ public:
             tail->next = newNode;
             tail = newNode;
         }
-        lenght++;
+        length++;
         // cout << "Admin added at back!" << endl;
     }
 
@@ -102,7 +102,7 @@ public:
             head->prev = nullptr;
         }
         delete temp;
-        lenght--;
+        length--;
         cout << "Admin remove from the front" << endl;
     }
 
@@ -119,7 +119,7 @@ public:
             head->next = nullptr;
         }
         delete temp;
-        lenght--;
+        length--;
         cout << "Admin remove from the back" << endl;
     }
 
@@ -141,7 +141,7 @@ public:
                     tail = curr->prev;
                 }
                 delete curr;
-                lenght--;
+                length--;
                 cout << "Admin with ID: " << adminId << " removed" << endl;
                 break;
             }
@@ -192,7 +192,7 @@ public:
                     newNode->prev = tail;
                     tail = newNode;
                 }
-                lenght++;
+                length++;
             }
         }
         loadAdmin.close();
