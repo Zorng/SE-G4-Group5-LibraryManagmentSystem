@@ -34,19 +34,24 @@ class TransactionList{
         TransactionNode* tail;
         int length;
     public:
-        TransactionList(TransactionNode* head, TransactionNode* tail, int lenght){
-            this->head = head;
-            this->tail = tail;
-            this->length = lenght;
+        TransactionList(){
+            this->head = nullptr;
+            this->tail = nullptr;
+            this->length = 0;
+        }
+
+        string generateID() {
+            return "TR" + to_string(length+1);
         }
 
         int getLength() const{
             return length;
         }
 
-        void insertFront(string& transactionID, string& itemID, string& actorID, string& time, string& type){
-            TransactionNode* newNode = new TransactionNode(transactionID, itemID, actorID, time, type);
-            if(head = nullptr){
+        void insertFront(string itemID, string  actorID, string time, string type){
+            string id = generateID();
+            TransactionNode* newNode = new TransactionNode(id, itemID, actorID, time, type);
+            if(head == nullptr){
                 head = tail = newNode;
             }else {
                 newNode->next = head;
@@ -56,9 +61,10 @@ class TransactionList{
             length++;
         }
 
-        void insertBack(string& transactionID, string& itemID, string& actorID, string& time, string& type){
-            TransactionNode* newNode = new TransactionNode(transactionID, itemID, actorID, time, type);
-            if(tail = nullptr){
+        void insertBack(string itemID, string actorID, string time, string type){
+            string id = generateID();
+            TransactionNode* newNode = new TransactionNode(id, itemID, actorID, time, type);
+            if(tail == nullptr){
                 tail = head = newNode;
             }else {
                 newNode->next = tail;
@@ -126,18 +132,72 @@ class TransactionList{
             }
 
         }
-        void readTransactionDB(string& transactionDB){
-            fstream file("transactionDB.txt");
+        void loadTransactionFromFile(string filename){
+            ifstream loadTransaction(filename);
+            if(!loadTransaction){
+                cout << "Failed to open file" << endl;
+                return;
+            }
+            string line;
+            while(getline(loadTransaction, line)){ // read full line
+                stringstream TransactionInfo(line);
+                string TrID, TrItemID, TrActorID, TrTime, TrType;
 
-            if(!file.is_open()){
-                cout << "Error opening file!" << endl;
+                if(getline(TransactionInfo, TrID, ',') &&
+                getline(TransactionInfo, TrItemID, ',') &&
+                getline(TransactionInfo, TrActorID, ',') &&
+                getline(TransactionInfo, TrTime, ',') &&
+                getline(TransactionInfo, TrType, ',')){
+                    TransactionNode* newNode = new TransactionNode(TrID, TrItemID, TrActorID, TrTime, TrType);
+                    if(head == nullptr){
+                        head = tail = newNode;
+                    }else{
+                        tail->next = newNode;
+                        newNode->prev = tail;
+                        tail = newNode;
+                    }
+                    length++;
+                }
             }
-            string transactionID, itemID, actorID, time, type;
-            while(file << transactionID << itemID << actorID << time << type){
-                insertBack(transactionID, itemID, actorID, time, type);
+        loadTransaction.close();
+    }
+
+        void saveTransaction(string filename) {
+            ofstream saveTransactionToFile(filename);
+            if(!saveTransactionToFile){
+                cout << "File failed to open" << endl;
+                return;
             }
-            file.close();
+            TransactionNode* curr = head;
+            while(curr != nullptr){
+                saveTransactionToFile << curr->transactionID << ","
+                                << curr->itemID << ","
+                                << curr->actorID << ","
+                                << curr->time<< ","
+                                << curr->type<< endl;
+                curr = curr->next;
+            }
+            saveTransactionToFile.close();
+            cout << "Save success" << endl;
         }
+
+        void displayTransaction(){
+        if(head == nullptr){
+            cout << "No Transaction!" << endl;
+            return;
+        }
+        TransactionNode* curr = head;
+        cout << "----- Transaction List -----" << endl;
+        while(curr != nullptr){
+            cout << "ID: " << curr->transactionID << ","
+                 << " itemID: " << curr->itemID << ","
+                 << " ActorID: " << curr->actorID << ","
+                 << " Time: " << curr->time << ","
+                 << " Type: " << curr->type << endl;
+            curr = curr->next;
+        }
+    }
+
 
 };
 #endif
