@@ -1,7 +1,7 @@
 #ifndef User_hpp
 #define User_hpp
 #include "Common.hpp"
-#define FILENAME "../database/userDB.txt"
+#define FILENAME "database/userDB.txt"
 class UserNode {
     private:
         string userName;
@@ -27,15 +27,22 @@ class UserList {
     private:
         UserNode *head;
         UserNode *tail;
+        int length;
 
     public: 
         UserList() {
             head = nullptr;
             tail = nullptr;
+            length = 0;
         }
 
-        void insertFront (string userName, string userId, string userPassword, string userBirthday) {
-            UserNode *newUser = new UserNode(userName, userId, userPassword, userBirthday);
+        string generateID() {
+            return "userID" + to_string(length+1); 
+        }
+
+        void insertFront (string userName, string userPassword, string userBirthday) {
+            string id = generateID();
+            UserNode *newUser = new UserNode(userName, id, userPassword, userBirthday);
             if (head == nullptr) {
                 head = tail = newUser;
             } else {
@@ -45,8 +52,9 @@ class UserList {
             }
         }
 
-        void insertBack(string userName, string userId, string userPassword, string userBirthday) {
-            UserNode *newUser = new UserNode(userName, userId, userPassword, userBirthday);
+        void insertBack(string userName, string userPassword, string userBirthday) {
+            string id = generateID();
+            UserNode *newUser = new UserNode(userName, id, userPassword, userBirthday);
             if (tail == nullptr) {
                 head = tail = newUser;
             } else {
@@ -132,19 +140,33 @@ class UserList {
             }
     }
 
-    void readUserDB(const string& filename) {
-        ifstream file(filename);
-        if (file.fail()) {
-            cout << "Failed to open a file " << filename << endl;
+   void loadUserFromFile(string filename){
+        ifstream loadUser(filename);
+        if(!loadUser){
+            cout << "Failed to open file" << endl;
             return;
         }
+        string line;
+        while(getline(loadUser, line)){ // read full line
+            stringstream UserInfo(line);
+            string UserId, UserName, UserPassword, UserBirthday;
 
-        string userName, userId, userPassword, userBirthday;
-        while (file >> userName >> userId >> userPassword >> userBirthday) {
-            insertBack(userName,  userId,  userPassword,  userBirthday);
+            if(getline(UserInfo, UserId, ',') &&
+               getline(UserInfo, UserName, ',') &&
+               getline(UserInfo, UserPassword, ',') &&
+               getline(UserInfo, UserBirthday, ',')){
+                UserNode* newNode = new UserNode(UserName, UserId, UserPassword, UserBirthday);
+                if(head == nullptr){
+                    head = tail = newNode;
+                }else{
+                    tail->next = newNode;
+                    newNode->prev = tail;
+                    tail = newNode;
+                }
+                length++;
+            }
         }
-
-        file.close();
+        loadUser.close();
     }
 
     void writeUserDB() {
@@ -157,9 +179,9 @@ class UserList {
 
         UserNode *temp = head;
         while (temp != nullptr) {
-            file << temp->userName << " "
-                << temp->userId << " "
-                << temp->userPassword << " "
+            file << temp->userName << ","
+                << temp->userId << ","
+                << temp->userPassword << ","
                 << temp->userBirthday << endl;
             temp = temp->next;
         }
