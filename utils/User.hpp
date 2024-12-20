@@ -258,6 +258,35 @@ class UserList {
 
         cout << "User with ID: " << inputID << " has beed added success." << endl;
     }
+
+    void edit(string inputID){
+        if(head == nullptr){
+            cout << "User list is Empty!" << endl;
+            return;
+        }
+
+        UserNode* curr = head;
+        while(curr != nullptr){
+            if(curr->userId == inputID) {
+                cout << "User found. Enter new Info: " << endl;
+                cout << "Enter new User Name: ";
+                cin.ignore(); // hamdle new line char
+                getline(cin, curr->userName);
+                cout << "Enter new User Password: ";
+                cin.ignore(); // hamdle new line char
+                getline(cin, curr->userPassword);
+                cout << "Enter new User Birthday (YYYY-MM-DD): ";
+                cin.ignore(); // hamdle new line char
+                getline(cin, curr->userBirthday);
+
+                cout << "User info updated success" << endl;
+                return;
+            }
+            curr = curr->next;
+        }
+        // if not match
+        cout << "User with ID: " << inputID << " not found" << endl;
+    }
 };
 
 #endif
