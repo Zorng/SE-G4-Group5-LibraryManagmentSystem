@@ -1,6 +1,7 @@
 #ifndef User_hpp
 #define User_hpp
 #include "Common.hpp"
+#include <conio.h>
 #define FILENAME "database/userDB.txt"
 class UserNode {
     private:
@@ -46,6 +47,7 @@ class UserList {
                 head->prev = newUser;
                 head = newUser;
             }
+            length++;
         }
 
         void insertBack(string id, string userName, string userPassword, string userBirthday) {
@@ -57,6 +59,7 @@ class UserList {
                 tail->next = newUser;
                 tail = newUser;
             }
+            length++;
         }
 
         void removeFront() {
@@ -73,6 +76,7 @@ class UserList {
                 head->prev = nullptr;
             }
             delete temp;
+            length--;
         }
 
         void removeBack() {
@@ -89,6 +93,7 @@ class UserList {
                 tail->next = nullptr;
             }
             delete temp;
+            length--;
         }
 
         void removeByID(string userId) {
@@ -192,6 +197,52 @@ class UserList {
             curr = curr->next; // move to next node
         }
         return false;
+    }
+
+    void displayUsers(){
+        if(head == nullptr){
+            cout << "No users in list!" << endl;
+            return;
+        }
+
+        const int USERS_PER_PAGES = 10;
+        int page = 0;
+        // calculate total page
+        int totalPage = (length + USERS_PER_PAGES - 1) / USERS_PER_PAGES;
+        UserNode* curr = head;
+
+        while(1){
+            cout << "----- User List (Page " << page+1 << " of " << totalPage << ") -----" << endl;
+
+            // display user in current page
+            UserNode* temp = curr;
+            for(int i = 0; i < USERS_PER_PAGES && temp != nullptr; i++){
+                cout << "ID: " << temp->userId
+                     << ", Name: " << temp->userName
+                     << ", Birthaday: " << temp->userBirthday << endl;
+                temp = temp->next;
+            }
+
+            cout << endl << "Use left arrow (<-) for previous page, "
+                         << "Use right arrow (->) for next page, "
+                         << "and Esc for exit." << endl;
+
+            int key = _getch();
+            if(key == 27){ // Esc key
+                break;
+            }else if(key == 77){ // right arrow
+                page++;
+                for(int i = 0; i < USERS_PER_PAGES && curr != nullptr; i++){
+                    curr = curr->next;
+                }
+            }else if(key == 75){
+                page--;
+                curr = head; // let curr = first user of the page;
+                for(int i = 0; i < USERS_PER_PAGES && curr != nullptr; i++){
+                    curr = curr->next;
+                }
+            }
+        }
     }
 };
 
