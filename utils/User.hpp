@@ -4,16 +4,16 @@
 #define FILENAME "database/userDB.txt"
 class UserNode {
     private:
-        string userName;
         string userId;
+        string userName;
         string userPassword;
         string userBirthday;
         UserNode *next;
         UserNode *prev;
 
-        UserNode( string userName, string userId, string userPassword, string userBirthday) {
-            this->userName = userName;
+        UserNode(string userId, string userName, string userPassword, string userBirthday) {
             this->userId = userId;
+            this->userName = userName;
             this->userBirthday = userBirthday;
             this->userPassword = userPassword;
             next = nullptr;
@@ -36,13 +36,9 @@ class UserList {
             length = 0;
         }
 
-        string generateID() {
-            return "userID" + to_string(length+1); 
-        }
 
-        void insertFront (string userName, string userPassword, string userBirthday) {
-            string id = generateID();
-            UserNode *newUser = new UserNode(userName, id, userPassword, userBirthday);
+        void insertFront (string id, string userName, string userPassword, string userBirthday) {
+            UserNode *newUser = new UserNode(id, userName , userPassword, userBirthday);
             if (head == nullptr) {
                 head = tail = newUser;
             } else {
@@ -52,9 +48,8 @@ class UserList {
             }
         }
 
-        void insertBack(string userName, string userPassword, string userBirthday) {
-            string id = generateID();
-            UserNode *newUser = new UserNode(userName, id, userPassword, userBirthday);
+        void insertBack(string id, string userName, string userPassword, string userBirthday) {
+            UserNode *newUser = new UserNode(id, userName, userPassword, userBirthday);
             if (tail == nullptr) {
                 head = tail = newUser;
             } else {
@@ -155,7 +150,7 @@ class UserList {
                getline(UserInfo, UserName, ',') &&
                getline(UserInfo, UserPassword, ',') &&
                getline(UserInfo, UserBirthday, ',')){
-                UserNode* newNode = new UserNode(UserName, UserId, UserPassword, UserBirthday);
+                UserNode* newNode = new UserNode(UserId, UserName, UserPassword, UserBirthday);
                 if(head == nullptr){
                     head = tail = newNode;
                 }else{
@@ -179,8 +174,8 @@ class UserList {
 
         UserNode *temp = head;
         while (temp != nullptr) {
-            file << temp->userName << ","
-                << temp->userId << ","
+            file << temp->userId << ","
+                << temp->userName << ","
                 << temp->userPassword << ","
                 << temp->userBirthday << endl;
             temp = temp->next;
