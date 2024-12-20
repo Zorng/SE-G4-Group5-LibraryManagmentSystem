@@ -12,9 +12,9 @@ private:
     AdminNode* next;
     
     //create a constructor for librarian object
-    AdminNode(string adminName, string adminId, string adminPassword, string adminBirthday){
-        this->adminName = adminName;
+    AdminNode(string adminId, string adminName, string adminPassword, string adminBirthday){
         this->adminId = adminId;
+        this->adminName = adminName;
         this->adminPassword = adminPassword;
         this->adminBirthday = adminBirthday;
         prev = nullptr;
