@@ -6,18 +6,16 @@ class TransactionNode{
         string transactionID;
         string itemID;
         string actorID;
-        string time;
         string type;
 
         TransactionNode* prev;
         TransactionNode* next;
         //struct of borrower ID, borrowed book ID
 
-        TransactionNode(string transactionID, string itemID, string actorID, string time, string type){
+        TransactionNode(string transactionID, string itemID, string actorID, string type){
             this->transactionID = transactionID;            
             this->itemID = itemID;          
-            this->actorID = actorID;            
-            this->time = time;          
+            this->actorID = actorID;                     
             this->type = type;          
         }
 
@@ -40,17 +38,13 @@ class TransactionList{
             this->length = 0;
         }
 
-        string generateID() {
-            return "TR" + to_string(length+1);
-        }
-
         int getLength() const{
             return length;
         }
 
-        void insertFront(string itemID, string  actorID, string time, string type){
-            string id = generateID();
-            TransactionNode* newNode = new TransactionNode(id, itemID, actorID, time, type);
+        void insertFront(string id, string itemID, string  actorID, string type){
+            
+            TransactionNode* newNode = new TransactionNode(id, itemID, actorID, type);
             if(head == nullptr){
                 head = tail = newNode;
             }else {
@@ -61,9 +55,9 @@ class TransactionList{
             length++;
         }
 
-        void insertBack(string itemID, string actorID, string time, string type){
-            string id = generateID();
-            TransactionNode* newNode = new TransactionNode(id, itemID, actorID, time, type);
+        void insertBack(string id, string itemID, string actorID, string type){
+            
+            TransactionNode* newNode = new TransactionNode(id, itemID, actorID, type);
             if(tail == nullptr){
                 tail = head = newNode;
             }else {
@@ -148,7 +142,7 @@ class TransactionList{
                 getline(TransactionInfo, TrActorID, ',') &&
                 getline(TransactionInfo, TrTime, ',') &&
                 getline(TransactionInfo, TrType, ',')){
-                    TransactionNode* newNode = new TransactionNode(TrID, TrItemID, TrActorID, TrTime, TrType);
+                    TransactionNode* newNode = new TransactionNode(TrID, TrItemID, TrActorID, TrType);
                     if(head == nullptr){
                         head = tail = newNode;
                     }else{
@@ -173,7 +167,6 @@ class TransactionList{
                 saveTransactionToFile << curr->transactionID << ","
                                 << curr->itemID << ","
                                 << curr->actorID << ","
-                                << curr->time<< ","
                                 << curr->type<< endl;
                 curr = curr->next;
             }
@@ -192,7 +185,6 @@ class TransactionList{
             cout << "ID: " << curr->transactionID << ","
                  << " itemID: " << curr->itemID << ","
                  << " ActorID: " << curr->actorID << ","
-                 << " Time: " << curr->time << ","
                  << " Type: " << curr->type << endl;
             curr = curr->next;
         }
