@@ -285,7 +285,48 @@ class UserList {
             curr = curr->next;
         }
         // if not match
-        cout << "User with ID: " << inputID << " not found" << endl;
+        cout << "User with ID: " << inputID << " not found." << endl;
+    }
+
+    void remove(string inputID){
+        if(head == nullptr){
+            cout << "User list is Empty!" << endl;
+            return;
+        }
+
+        UserNode* curr = head;
+        
+        while(curr != nullptr){
+            if(curr->userId == inputID){
+                if(curr == head){ // if node to remove is head
+                    head = curr->next;
+                    if(head != nullptr){
+                        head->prev = nullptr;
+                    }
+                }else if(head == tail){ //if node to remove is tail
+                    tail = curr->prev;
+                    if(tail != nullptr){
+                        tail->next = nullptr;
+                    }
+                }else{
+                    // if node in middle
+                    curr->prev->next = curr->next;
+                    curr->next->prev = curr->prev;
+                }
+
+                // if the list become empty
+                if(head == nullptr){
+                    tail = nullptr;
+                }
+
+                delete curr;
+                length--;
+                cout << "User with ID: " << inputID << " has been removed." << endl;
+                return;
+            }
+            curr = curr->next;
+        }
+        cout << "User with ID: " << inputID << " not found." << endl;
     }
 };
 
