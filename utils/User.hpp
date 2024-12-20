@@ -187,6 +187,17 @@ class UserList {
         }
         file.close();
     }
+
+    bool searchAndCompare(string inputID, string inputPassword){
+        UserNode* curr = head;
+        while(curr != nullptr){
+            if(curr->userId == inputID && curr->userPassword == inputPassword){
+                return true;
+            }
+            curr = curr->next; // move to next node
+        }
+        return false;
+    }
 };
 
 #endif
