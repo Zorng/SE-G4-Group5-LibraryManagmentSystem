@@ -26,17 +26,19 @@ string getOsName()
 
 void clearScreen() {
     string osName = getOsName();
-    if(osName == "Windows 64-bit") {
-        system("CLS");
+    if(osName == "Windows 32-bit") {
+        cout << "i am window" << endl;
+        system("cls");
     } else if (osName == "Mac OSX") {
+        cout << "i am mac" << endl;
         system("clear");
+    } else if(osName == "Windows 64-bit") {
+        cout << "i am window" << endl;
+        system("cls");
     }
 }
 
 int main(){
-
-    AdminList admin;
-    UserList user;
 
     string inputID;
     string inputPassword;
