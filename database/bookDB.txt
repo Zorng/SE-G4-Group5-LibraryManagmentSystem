@@ -1,0 +1,6 @@
+BID01, How to train your dragon, John, 12-2002,1
+BID02, How to train your dragon, John, 12-2002,1
+BID03, How to train your dragon, John, 12-2002,0
+BID04, Dracula, Alucard, 12-1998,1
+BID05, Rome at war, Augustus, 12-2002,0
+BID06, Rome at war, Augustus, 12-2002,1
