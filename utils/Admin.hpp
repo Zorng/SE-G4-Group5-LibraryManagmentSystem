@@ -197,6 +197,17 @@ public:
         }
         loadAdmin.close();
     }
+
+    bool searchAndCompare(string inputID, string inputPassword){
+        AdminNode* curr = head;
+        while(curr != nullptr){
+            if(curr->adminId == inputID && curr->adminPassword == inputPassword){
+                return true;
+            }
+            curr = curr->next; // move to next node
+        }
+        return false;
+    }
 };
 #endif
 
