@@ -244,6 +244,20 @@ class UserList {
             }
         }
     }
+
+    void add(string inputID, string inputName, string inputPassword, string inputBD){
+        UserNode* newNode = new UserNode(inputID, inputName, inputPassword, inputBD);
+        if(head == nullptr){
+            head = tail = newNode;
+        }else{
+            tail->next = newNode;
+            newNode->prev = tail;
+            tail = newNode;
+        }
+        length++;
+
+        cout << "User with ID: " << inputID << " has beed added success." << endl;
+    }
 };
 
 #endif
