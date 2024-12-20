@@ -28,10 +28,6 @@ private:
     AdminNode* head;
     AdminNode* tail;
     int length;
-
-    string generateAdminId(){
-        return "ADMIN" + to_string(length+1);
-    }
 public:
     AdminList(){
         head = nullptr;
@@ -44,9 +40,8 @@ public:
     }
 
     // insert front
-    void insertFront(string adminName, string adminPassword, string adminBirthday){
-        string adminId = generateAdminId();
-        AdminNode* newNode = new AdminNode(adminName, adminId, adminPassword, adminBirthday);
+    void insertFront(string id, string adminName, string adminPassword, string adminBirthday){
+        AdminNode* newNode = new AdminNode(id, adminName, adminPassword, adminBirthday);
         if(head == nullptr){
             head = tail = newNode;
         }else{
@@ -59,9 +54,8 @@ public:
     }
 
     // insert back
-    void insertBack(string adminName, string adminPassword, string adminBirthday){
-        string adminId = generateAdminId();
-        AdminNode* newNode = new AdminNode(adminName, adminId, adminPassword, adminBirthday);
+    void insertBack(string id, string adminName, string adminPassword, string adminBirthday){
+        AdminNode* newNode = new AdminNode(id, adminName, adminPassword, adminBirthday);
         if(head == nullptr){
             head = tail = newNode;
         }else{
@@ -184,7 +178,7 @@ public:
                getline(adminInfo, adminName, ',') &&
                getline(adminInfo, adminPassword, ',') &&
                getline(adminInfo, adminBirthday, ',')){
-                AdminNode* newNode = new AdminNode(adminName, adminId, adminPassword, adminBirthday);
+                AdminNode* newNode = new AdminNode(adminId, adminName, adminPassword, adminBirthday);
                 if(head == nullptr){
                     head = tail = newNode;
                 }else{
