@@ -8,22 +8,17 @@ class BookNode{
         string bookTitle;
         string bookAuthor;
         string bookPbDate;
-        string summary;
-        int totalAmount;
-        int borrowedAmount;
-        //totalAvailable = totalAmount - borrowedAmount
+        bool availability;
         BookNode* prev;
         BookNode* next;
     public:
         //constructor;
-        BookNode(string bookID, string bookTitle, string bookAuthor, string bookPbDate, string summary = "", int totalAmount = 0, int borrowedAmount = 0){
+        BookNode(string bookID, string bookTitle, string bookAuthor, string bookPbDate, bool status){
             this->bookID=bookID;
             this->bookTitle=bookTitle;
             this->bookAuthor=bookAuthor;
             this->bookPbDate=bookPbDate;
-            this->summary=summary;
-            this->totalAmount=totalAmount;
-            this->borrowedAmount=borrowedAmount;
+            this->availability = status;
             this->prev = nullptr;
             this->next = nullptr;
         }   
@@ -37,12 +32,8 @@ class BookList {
         BookNode* head;
         BookNode* tail;
         int length;
-        int counter = 1; //static counter
 
         //Generate ID for each book
-        string generateID(){
-            return "IDBOOK" + to_string(counter++);
-        }
     public:
         BookList(){
             head=nullptr;
@@ -63,8 +54,6 @@ class BookList {
                     cout << "Title: " << current->bookTitle << endl;
                     cout << "Author: " << current->bookAuthor << endl;
                     cout << "Published Date: " << current->bookPbDate << endl;
-                    cout << "Total Amount: " << current->totalAmount << endl;
-                    cout << "Borrowed: " << current->borrowedAmount << endl;
                     return;
                 }
                 current = current->next;
@@ -73,9 +62,8 @@ class BookList {
         }
 
 
-        void insertFront(string title, string author, string pbDate, string summary = "", int totalAmount = 0){
-            string id = generateID();
-            BookNode* newNode = new BookNode(id, title, author, pbDate, summary, totalAmount, 0);
+        void insertFront(string id, string title, string author, string pbDate, bool status){
+            BookNode* newNode = new BookNode(id, title, author, pbDate, status);
             if(!head){
                 head = tail = newNode;
             } else{
@@ -86,9 +74,9 @@ class BookList {
             ++length;
         }        
 
-        void insertBack(string title, string author, string pbDate, string summary = "", int totalAmount = 0){
-            string id = generateID();
-            BookNode* newNode = new BookNode(id, title, author, pbDate, summary, totalAmount, 0);
+        void insertBack(string id, string title, string author, string pbDate, bool status){
+
+            BookNode* newNode = new BookNode(id, title, author, pbDate, status);
             if(!tail){
                 head = tail = newNode;
             } else {
@@ -157,17 +145,19 @@ class BookList {
                 return;
             }
 
-            string line, title, author, pbDate, summary;
+            string line, id, title, author, pbDate, status;
             int totalAmount;
             while (getline(file, line)){
                 stringstream ss(line);
+                getline(ss, id, ',');
                 getline(ss, title, ',');
                 getline(ss, author, ',');
                 getline(ss, pbDate, ',');
-                getline(ss, summary, ',');
-                ss >> totalAmount;
-
-                insertBack(title, author, pbDate, summary, totalAmount);
+                getline(ss, status, ',');
+                bool st;
+                if(status == "0") st = false;
+                else st = true;
+                insertBack(id, title, author, pbDate, st);
             }
 
             file.close();
@@ -185,13 +175,24 @@ class BookList {
                                 << curr->bookTitle << ","
                                 << curr->bookAuthor << ","
                                 << curr->bookPbDate << ","
-                                << curr->totalAmount << ","
-                                << curr->borrowedAmount << endl;
+                                << curr->availability<< endl;
                                 
                 curr = curr->next;
             }
             savebookToFile.close();
             cout << "Save success" << endl;
+        }
+
+        void print() {
+            BookNode* curr = head;
+            cout << "----- Book List -----" << endl;
+            while(curr != nullptr){
+            cout << "ID: " << curr->bookID << ",\t"
+                 << "Name: " << curr->bookTitle << ",\t"
+                 << "Birthday: " << curr->bookPbDate << ",\t"
+                 << "Availability: " << curr->availability << endl;
+            curr = curr->next;
+        }
         }
 };
 #endif
