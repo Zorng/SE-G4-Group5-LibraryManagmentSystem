@@ -1,8 +1,7 @@
 #ifndef User_hpp
 #define User_hpp
 #include "Common.hpp"
-#include <conio.h>
-#define FILENAME "database/userDB.txt"
+#define FILENAME "database/userDB.txt"   
 class UserNode {
     private:
         string userId;
@@ -212,6 +211,7 @@ class UserList {
         UserNode* curr = head;
 
         while(1){
+            clearScreen();
             cout << "----- User List (Page " << page+1 << " of " << totalPage << ") -----" << endl;
 
             // display user in current page
@@ -227,20 +227,20 @@ class UserList {
                          << "Use right arrow (->) for next page, "
                          << "and Esc for exit." << endl;
 
-            int key = _getch();
-            if(key == 27){ // Esc key
+            string input = readNav();
+            if(input == "exit"){
                 break;
-            }else if(key == 77){ // right arrow
+            }else if(input == "right" && page+1 < totalPage){
+                for(int i = 0; i < USERS_PER_PAGES && curr != nullptr; i++){
+                    curr = curr->next;
+                }
                 page++;
-                for(int i = 0; i < USERS_PER_PAGES && curr != nullptr; i++){
+            }else if(input == "left" && page > 0){
+                curr = head;
+                for(int i = 0; i < (page-1) * USERS_PER_PAGES; i++){
                     curr = curr->next;
                 }
-            }else if(key == 75){
                 page--;
-                curr = head; // let curr = first user of the page;
-                for(int i = 0; i < USERS_PER_PAGES && curr != nullptr; i++){
-                    curr = curr->next;
-                }
             }
         }
     }
