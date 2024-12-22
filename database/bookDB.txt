@@ -1,6 +1,34 @@
-BID01, How to train your dragon, John, 12-2002,1
-BID02, How to train your dragon, John, 12-2002,1
-BID03, How to train your dragon, John, 12-2002,0
-BID04, Dracula, Alucard, 12-1998,1
-BID05, Rome at war, Augustus, 12-2002,0
-BID06, Rome at war, Augustus, 12-2002,1
+BID01,Dracula,Alucard,12-1998,1
+BID01,Dracula,Alucard,12-1998,1
+BID01,Dracula,Alucard,12-1998,1
+BID06,Rome at war,Augustus,12-2002,1
+BID07,How to train your dragon,John,12-2002,1
+BID020,Cola Man,Hearther,10-1906,1
+BID021,Clone,Hearther,10-1906,1
+BID022,Arch Angel,Hearther,10-1906,1
+BID011,Linear algebra,Mark,12-2006,1
+BID012,Vector Calculus,James,12-2020,1
+BID012,Vector Calculus,James,12-2020,1
+BID012,Vector Calculus,James,12-2020,1
+BID013,Count,Issac,10-1992,1
+BID014,Algorithm,Quant,10-1999,1
+BID015,Dear Mary,JM,10-1899,1
+BID016,Calculus I,Hearther,10-1899,1
+BID017,Calculus II,Hearther,10-1902,1
+BID018,Calculus III,Hearther,10-1903,1
+BID019,Calculus IV,Hearther,10-1906,1
+BID020,Cola Man,Hearther,10-1906,1
+BID021,Clone,Hearther,10-1906,1
+BID022,Arch Angel,Hearther,10-1906,1
+BID022,Brch Angel,Hearther,10-1906,1
+BID022,Crch Angel,Hearther,10-1906,1
+BID022,D Angel,Hearther,10-1906,1
+BID022,E Angel,Hearther,10-1906,1
+BID022,F Angel,Hearther,10-1906,1
+BID022,G Angel,Hearther,10-1906,1
+BID022,H Angel,Hearther,10-1906,1
+BID022,I Angel,Hearther,10-1906,1
+BID022,J Angel,Hearther,10-1906,1
+BID022,K Angel,Hearther,10-1906,1
+BID022,qop Angel,Hearther,10-1906,1
+BID022,jkl Angel,Hearther,10-1906,1

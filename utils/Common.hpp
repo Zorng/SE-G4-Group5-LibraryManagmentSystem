@@ -1,10 +1,14 @@
 #ifndef Common_hpp
 #define Common_hpp
+
     #include <iostream>
     #include <string>
     #include <vector>
     #include <fstream>
     #include <sstream>
+    #include <map>
+    #include <list>
+    #include <tuple>
     using namespace std;
     // detect OS
     #ifdef _WIN32
@@ -149,5 +153,8 @@
     #else
         #define OS "Other";
     #endif
+
     // end of detect OS
 #endif
+  
+
