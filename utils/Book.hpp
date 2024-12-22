@@ -192,8 +192,84 @@ class BookList {
                  << "Publish Date: " << curr->bookPbDate << ",\t"
                  << "Availability: " << curr->availability << endl;
             curr = curr->next;
+            }
         }
+
+    void transformList() {
+        map<string, list<tuple<string, string, int>>> bookMap;
+        map<string, list<tuple<string, string, int>>>::iterator map_it;
+        list<tuple<string, string, int>>:: iterator list_it;
+        //  <title, <auth, date, count>>
+        BookNode* curr = head;
+        int itemPerPage = 10;
+        int totalPage;
+        int totalItem;
+        int currentPage;
+        while(curr != nullptr) {
+            if(bookMap.size() == 0) {
+                bookMap[curr->bookTitle].push_back(make_tuple(curr->bookAuthor, curr->bookPbDate, 1));
+            } else {
+                for(map_it = bookMap.begin(); map_it != bookMap.end(); ++map_it){
+                    if(map_it->first == curr->bookTitle){
+                        get<2>(*map_it->second.begin())++;
+                    } 
+                }
+                if (map_it == bookMap.end()) {
+                    bookMap[curr->bookTitle].push_back(make_tuple(curr->bookAuthor, curr->bookPbDate, 1));
+                }
+            } 
+            curr = curr->next;
         }
+        totalItem = bookMap.size();
+        totalPage = (totalItem/10) + 1;
+        currentPage = 1;
+        string navKey;
+        int lower = 0;
+        int k = 0;
+        while(1) {
+            clearScreen();
+            lower = ((currentPage-1)) * itemPerPage;
+            cout << "========================================" << endl;
+            cout << "Press left arrow to go to previous page, right arrow to go to next page, q to exit" << endl;
+            cout << "Press right arrow to go to next page" << endl;
+            cout << "Press q to exit" << endl;
+            cout << "========================================" << endl;
+            cout << "Current page "<< currentPage << endl;
+            cout << "Total page "<< totalPage << endl;
+            //cout << "Total nav "<< ++k << endl;
+            cout << "Total titles: "<< bookMap.size() << endl;
+            cout << "========================================" << endl;
+            cout << "title\t" << "auth\t" << "publish date\t" << "avaialable" << endl;
+           // cout << "lower "<< lower << endl;
+            map_it = bookMap.begin();
+            for(int i = 0; i < lower; i++) {
+                map_it++;
+            }  // set initial display element
+            if(currentPage != totalPage) {
+                for(int i = 0; i < 10; map_it++, i++){
+                    cout << map_it->first << ", ";
+                    list_it = map_it->second.begin();
+                    cout << get<0>(*list_it) << ", " << get<1>(*list_it) << ", " << get<2>(*list_it);
+                    cout << endl;
+                }
+            } else { // last page
+                 for(int i = 0; map_it != bookMap.end(); map_it++){
+                    cout << map_it->first << ", ";
+                    list_it = map_it->second.begin();
+                    cout << get<0>(*list_it) << ", " << get<1>(*list_it) << ", " << get<2>(*list_it);
+                    cout << endl;
+                }
+            }
+            navKey = readNav();
+            if(navKey == "left") {
+                if(currentPage != 1) currentPage--;
+            } else if (navKey == "right") {
+                if(currentPage < totalPage) currentPage++;
+            } else if (navKey == "exit") {
+                break;
+            }
+        }
+
 
         //Update the availability of the book status
         void updateBorrow(string inputItemID){
@@ -265,4 +341,6 @@ class BookList {
             cout << "Book ID " << inputID << "has been removed." << endl;
         }
 };
+
+
 #endif
