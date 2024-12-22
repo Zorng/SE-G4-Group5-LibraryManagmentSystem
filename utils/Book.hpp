@@ -227,7 +227,7 @@ class BookList {
         int lower = 0;
         int k = 0;
         while(1) {
-            system("clear");
+            clearScreen();
             lower = ((currentPage-1)) * itemPerPage;
             cout << "========================================" << endl;
             cout << "Press left arrow to go to previous page, right arrow to go to next page, q to exit" << endl;
