@@ -10,8 +10,7 @@
     #include <list>
     #include <tuple>
     using namespace std;
-
-// detect OS
+    // detect OS
     #ifdef _WIN32
         //WIN32
         #define OS "Windows 32-bit"
@@ -154,6 +153,8 @@
     #else
         #define OS "Other";
     #endif
-// end of detect OS    
+
+    // end of detect OS
 #endif
+  
 
