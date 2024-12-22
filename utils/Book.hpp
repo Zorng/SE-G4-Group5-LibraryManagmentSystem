@@ -189,7 +189,7 @@ class BookList {
             while(curr != nullptr){
             cout << "ID: " << curr->bookID << ",\t"
                  << "Name: " << curr->bookTitle << ",\t"
-                 << "Birthday: " << curr->bookPbDate << ",\t"
+                 << "Publish Date: " << curr->bookPbDate << ",\t"
                  << "Availability: " << curr->availability << endl;
             curr = curr->next;
             }
@@ -201,7 +201,7 @@ class BookList {
         list<tuple<string, string, int>>:: iterator list_it;
         //  <title, <auth, date, count>>
         BookNode* curr = head;
-        int itemPerPage = 5;
+        int itemPerPage = 10;
         int totalPage;
         int totalItem;
         int currentPage;
@@ -221,7 +221,7 @@ class BookList {
             curr = curr->next;
         }
         totalItem = bookMap.size();
-        totalPage = (totalItem/5) + 1;
+        totalPage = (totalItem/10) + 1;
         currentPage = 1;
         string navKey;
         int lower = 0;
@@ -246,7 +246,7 @@ class BookList {
                 map_it++;
             }  // set initial display element
             if(currentPage != totalPage) {
-                for(int i = 0; i < 5; map_it++, i++){
+                for(int i = 0; i < 10; map_it++, i++){
                     cout << map_it->first << ", ";
                     list_it = map_it->second.begin();
                     cout << get<0>(*list_it) << ", " << get<1>(*list_it) << ", " << get<2>(*list_it);
@@ -269,7 +269,77 @@ class BookList {
                 break;
             }
         }
-    }
+
+
+        //Update the availability of the book status
+        void updateBorrow(string inputItemID){
+            BookNode* current = head;
+            while(current != nullptr){
+                if(current->bookID == inputItemID){
+                    current->availability == false; //Mark it as unvailable
+                    cout << "Book ID " << inputItemID << " has been marked as unavailable." << endl;
+                    return;
+                }
+                current = current->next;
+            }
+            cout << "Book ID " << inputItemID << " not found in the list." << endl;
+        }
+
+        //Admin add book to booklist
+        void add(string inputID, string inputTitle, string inputAuthName, string inputPublishDate){
+            //availability set to true when add new book
+            insertBack(inputID, inputTitle, inputAuthName, inputPublishDate, true);
+            cout << "Book ID " << inputID << " has been added successfully." << endl;
+        }
+        
+        //Edit books
+        void edit(string inputID){
+            BookNode* current = head;
+            while(current != nullptr){
+                if(current->bookID == inputID){
+                    cout << "Editing Book ID: " << inputID << endl;
+                    cout << "Current Title: " << current->bookTitle << endl;
+                    cout << "Enter new Title: ";
+                    cin.ignore();
+                    getline(cin, current->bookTitle);
+
+                    cout << "Current Author: " << current->bookAuthor << endl;
+                    cout << "Enter new Author: ";
+                    getline(cin, current->bookAuthor);
+            
+                    cout << "Current Publish Date: " << current->bookPbDate << endl;
+                    cout << "Enter new Publish Date (format MM-YYYY): ";
+                    getline(cin, current->bookPbDate);
+
+                    cout << "Book ID " << inputID << " has been updated successfully!" << endl;
+                    return;
+                }
+                current = current->next;
+            }
+            cout << "Book ID " << inputID << " does not exist." << endl;
+        }
+
+        //Remove book by admin
+        void remove(string inputID){
+            BookNode* current = head;
+            bool found = false;
+            while(current != nullptr){
+                if(current->bookID == inputID){
+                    found = true;
+                    break;
+                }
+                current = current->next;
+            }
+
+            if(!found){
+                cout << "Input ID does not exist." << endl;
+                return;
+            }
+
+            //If found
+            removeID(inputID);
+            cout << "Book ID " << inputID << "has been removed." << endl;
+        }
 };
 
 
