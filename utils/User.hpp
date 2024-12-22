@@ -1,7 +1,7 @@
 #ifndef User_hpp
 #define User_hpp
 #include "Common.hpp"
-#define FILENAME "database/userDB.txt"
+#define FILENAME "database/userDB.txt"   
 class UserNode {
     private:
         string userId;
@@ -46,6 +46,7 @@ class UserList {
                 head->prev = newUser;
                 head = newUser;
             }
+            length++;
         }
 
         void insertBack(string id, string userName, string userPassword, string userBirthday) {
@@ -57,6 +58,7 @@ class UserList {
                 tail->next = newUser;
                 tail = newUser;
             }
+            length++;
         }
 
         void removeFront() {
@@ -73,6 +75,7 @@ class UserList {
                 head->prev = nullptr;
             }
             delete temp;
+            length--;
         }
 
         void removeBack() {
@@ -89,6 +92,7 @@ class UserList {
                 tail->next = nullptr;
             }
             delete temp;
+            length--;
         }
 
         void removeByID(string userId) {
@@ -192,6 +196,137 @@ class UserList {
             curr = curr->next; // move to next node
         }
         return false;
+    }
+
+    void displayUsers(){
+        if(head == nullptr){
+            cout << "No users in list!" << endl;
+            return;
+        }
+
+        const int USERS_PER_PAGES = 10;
+        int page = 0;
+        // calculate total page
+        int totalPage = (length + USERS_PER_PAGES - 1) / USERS_PER_PAGES;
+        UserNode* curr = head;
+
+        while(1){
+            clearScreen();
+            cout << "----- User List (Page " << page+1 << " of " << totalPage << ") -----" << endl;
+
+            // display user in current page
+            UserNode* temp = curr;
+            for(int i = 0; i < USERS_PER_PAGES && temp != nullptr; i++){
+                cout << "ID: " << temp->userId
+                     << ", Name: " << temp->userName
+                     << ", Birthaday: " << temp->userBirthday << endl;
+                temp = temp->next;
+            }
+
+            cout << endl << "Use left arrow (<-) for previous page, "
+                         << "Use right arrow (->) for next page, "
+                         << "and Esc for exit." << endl;
+
+            string input = readNav();
+            if(input == "exit"){
+                break;
+            }else if(input == "right" && page+1 < totalPage){
+                for(int i = 0; i < USERS_PER_PAGES && curr != nullptr; i++){
+                    curr = curr->next;
+                }
+                page++;
+            }else if(input == "left" && page > 0){
+                curr = head;
+                for(int i = 0; i < (page-1) * USERS_PER_PAGES; i++){
+                    curr = curr->next;
+                }
+                page--;
+            }
+        }
+    }
+
+    void add(string inputID, string inputName, string inputPassword, string inputBD){
+        UserNode* newNode = new UserNode(inputID, inputName, inputPassword, inputBD);
+        if(head == nullptr){
+            head = tail = newNode;
+        }else{
+            tail->next = newNode;
+            newNode->prev = tail;
+            tail = newNode;
+        }
+        length++;
+
+        cout << "User with ID: " << inputID << " has beed added success." << endl;
+    }
+
+    void edit(string inputID){
+        if(head == nullptr){
+            cout << "User list is Empty!" << endl;
+            return;
+        }
+
+        UserNode* curr = head;
+        while(curr != nullptr){
+            if(curr->userId == inputID) {
+                cout << "User found. Enter new Info: " << endl;
+                cout << "Enter new User Name: ";
+                cin.ignore(); // hamdle new line char
+                getline(cin, curr->userName);
+                cout << "Enter new User Password: ";
+                cin.ignore(); // hamdle new line char
+                getline(cin, curr->userPassword);
+                cout << "Enter new User Birthday (YYYY-MM-DD): ";
+                cin.ignore(); // hamdle new line char
+                getline(cin, curr->userBirthday);
+
+                cout << "User info updated success" << endl;
+                return;
+            }
+            curr = curr->next;
+        }
+        // if not match
+        cout << "User with ID: " << inputID << " not found." << endl;
+    }
+
+    void remove(string inputID){
+        if(head == nullptr){
+            cout << "User list is Empty!" << endl;
+            return;
+        }
+
+        UserNode* curr = head;
+        
+        while(curr != nullptr){
+            if(curr->userId == inputID){
+                if(curr == head){ // if node to remove is head
+                    head = curr->next;
+                    if(head != nullptr){
+                        head->prev = nullptr;
+                    }
+                }else if(head == tail){ //if node to remove is tail
+                    tail = curr->prev;
+                    if(tail != nullptr){
+                        tail->next = nullptr;
+                    }
+                }else{
+                    // if node in middle
+                    curr->prev->next = curr->next;
+                    curr->next->prev = curr->prev;
+                }
+
+                // if the list become empty
+                if(head == nullptr){
+                    tail = nullptr;
+                }
+
+                delete curr;
+                length--;
+                cout << "User with ID: " << inputID << " has been removed." << endl;
+                return;
+            }
+            curr = curr->next;
+        }
+        cout << "User with ID: " << inputID << " not found." << endl;
     }
 };
 
