@@ -45,9 +45,9 @@
         }
         string readNav() {
             string input;
-            setTerminalMode(true);
+            // setTerminalMode(true);
             input = readArrowKeys();
-            setTerminalMode(false);
+            // setTerminalMode(false);
             return input;
         }
         void clearScreen() {
@@ -87,9 +87,9 @@
         }
         string readNav() {
             string input;
-            setTerminalMode(true);
+            // setTerminalMode(true);
             input = readArrowKeys();
-            setTerminalMode(false);
+            // setTerminalMode(false);
             return input;
         }
         void clearScreen() {
