@@ -189,7 +189,24 @@ class TransactionList{
             curr = curr->next;
         }
     }
+    void addBorrow(string id, string itemID, string actorID, string type){
+        insertBack(id, itemID, actorID, "Borrowing");
+    }
+    void acceptReturn(string inputitemID){
+        TransactionNode* curr = head;
 
+        while(curr != nullptr){
+            if(curr->itemID == inputitemID){
+                curr->type = "Returned";
+                cout << "Item " << inputitemID << " marked as returned.";
+                
+                return;
+            }
+            curr = curr->next;
+        }
+
+        cout << "Input item ID does not exist in transaction list";
+    }
 
 };
 #endif
