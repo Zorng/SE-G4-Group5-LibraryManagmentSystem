@@ -9,6 +9,7 @@
     #include <map>
     #include <list>
     #include <tuple>
+    #include <iomanip>
     using namespace std;
     // detect OS
     #ifdef _WIN32
