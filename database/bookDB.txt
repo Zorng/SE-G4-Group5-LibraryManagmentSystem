@@ -1,0 +1,19 @@
+BID01,Dracula,Alucard,12-1998,1
+BID03,Dracula,Alucard,12-1998,1
+BID06,Rome at war,Augustus,12-2002,1
+BID07,How to train your dragon,John,12-2002,1
+BID011,Linear algebra,Mark,12-2006,1
+BID012,Vector Calculus,James,12-2020,1
+BID013,Count,Issac,10-1992,1
+BID014,Algorithm,Quant,10-1999,1
+BID015,Dear Mary,JM,10-1899,1
+BID016,Calculus I,Hearther,10-1899,1
+BID017,Calculus II,Hearther,10-1902,1
+BID018,Calculus III,Hearther,10-1903,1
+BID019,Calculus IV,Hearther,10-1906,1
+BID020,Cola Man,Hearther,10-1906,1
+BID021,Clone,Hearther,10-1906,1
+BID022,Arch Angel,Hearther,10-1906,0
+BID023,qop Angel,Hearther,10-1906,0
+BID024,jkl Angel,Hearther,10-1906,1
+BID89,Blue stones,Glasc,12-12-1988,1
