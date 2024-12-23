@@ -9,13 +9,15 @@
     #include <map>
     #include <list>
     #include <tuple>
-    #include <iomanip>
+    
+
     using namespace std;
     // detect OS
     #ifdef _WIN32
         //WIN32
         #define OS "Windows 32-bit"
         #include <conio.h>
+        #include <iomanip>
         string readArrowKeys() {
             std::cout << "Press arrow keys or 'q' to quit.\n";
             while (true) {
@@ -56,6 +58,7 @@
         //WIN64
         #define OS "Windows 64-bit"
         #include <conio.h>
+        #include <iomanip>
         string readArrowKeys() {
             std::cout << "Press arrow keys or 'q' to quit.\n";
             while (true) {
