@@ -2,6 +2,10 @@
 
 We will create functionalities of the Library Managment System according to the scope of the project. The scope of this project is broken down into multiple evolution starting from *Basic* to *Evolution 1*, *Evolution 2*, ... *Evolution N* (maybe at most Evolution 3). Each evolution can only be developed only if the previous evolution is completed. We start from building the *Basic* evolution.
 
+## Compiler
+
+C++11
+
 ## Basic
 
 **<u>NOTE</u>: In this context, item is refered as book and vice versa. So, item database is book database**<br>
