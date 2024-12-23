@@ -16,7 +16,9 @@ class TransactionNode{
             this->transactionID = transactionID;            
             this->itemID = itemID;          
             this->actorID = actorID;                     
-            this->type = type;          
+            this->type = type;  
+            prev = nullptr;
+            next = nullptr;        
         }
 
         //write a constructor for the class;
@@ -58,11 +60,11 @@ class TransactionList{
         void insertBack(string id, string itemID, string actorID, string type){
             
             TransactionNode* newNode = new TransactionNode(id, itemID, actorID, type);
-            if(tail == nullptr){
+            if(!tail){
                 tail = head = newNode;
             }else {
-                newNode->next = tail;
-                tail -> prev = newNode;
+                tail->next = newNode;
+                newNode->prev = tail;
                 tail = newNode;
             }
             length++;
@@ -126,35 +128,25 @@ class TransactionList{
             }
 
         }
-        void loadTransactionFromFile(string filename){
-            ifstream loadTransaction(filename);
-            if(!loadTransaction){
-                cout << "Failed to open file" << endl;
+        void readTransactionDB(string filename){
+            ifstream file(filename);
+            if(!file.is_open()){
+                cerr << "Unable to open file: " << filename << endl;
                 return;
             }
-            string line;
-            while(getline(loadTransaction, line)){ // read full line
-                stringstream TransactionInfo(line);
-                string TrID, TrItemID, TrActorID, TrTime, TrType;
 
-                if(getline(TransactionInfo, TrID, ',') &&
-                getline(TransactionInfo, TrItemID, ',') &&
-                getline(TransactionInfo, TrActorID, ',') &&
-                getline(TransactionInfo, TrTime, ',') &&
-                getline(TransactionInfo, TrType, ',')){
-                    TransactionNode* newNode = new TransactionNode(TrID, TrItemID, TrActorID, TrType);
-                    if(head == nullptr){
-                        head = tail = newNode;
-                    }else{
-                        tail->next = newNode;
-                        newNode->prev = tail;
-                        tail = newNode;
-                    }
-                    length++;
-                }
+            string line, id, itemId, actorId, type;
+            
+            while (getline(file, line)){
+                stringstream ss(line);
+                getline(ss, id, ',');
+                getline(ss, itemId, ',');
+                getline(ss, actorId, ',');
+                getline(ss, type, ',');
+                insertBack(id, itemId, actorId, type);
             }
-        loadTransaction.close();
-    }
+            file.close();
+        }
 
         void saveTransaction(string filename) {
             ofstream saveTransactionToFile(filename);
@@ -175,10 +167,7 @@ class TransactionList{
         }
 
         void displayTransaction(){
-        if(head == nullptr){
-            cout << "No Transaction!" << endl;
-            return;
-        }
+
         TransactionNode* curr = head;
         cout << "----- Transaction List -----" << endl;
         while(curr != nullptr){
@@ -188,9 +177,11 @@ class TransactionList{
                  << " Type: " << curr->type << endl;
             curr = curr->next;
         }
+        
     }
     void addBorrow(string id, string itemID, string actorID, string type){
         insertBack(id, itemID, actorID, "Borrowing");
+        cout << "added " << id << endl; 
     }
     void acceptReturn(string inputitemID){
         TransactionNode* curr = head;
@@ -207,6 +198,62 @@ class TransactionList{
 
         cout << "Input item ID does not exist in transaction list";
     }
-
+    
+    void showTrList() {
+        TransactionNode* curr = head;
+        const int tr_PER_PAGES = 10;
+        int totalPage = (length + tr_PER_PAGES - 1) / tr_PER_PAGES;
+        int page = 0;
+        cout    << setw(20) << left << "      Transaction ID" 
+                 << setw(20) << left << "     Item ID" 
+                 << setw(20) << left << "     User ID" 
+                 << setw(20) << left << "     Status" 
+                 << endl;
+        // while(curr != nullptr) {
+        //     cout << endl;
+        //     cout << "| " << setw(20) << curr->transactionID << ""
+        //          << "    " << setw(16)<< curr->itemID << ""
+        //          << "    " << setw(16)<< curr->actorID << ""
+        //          << "    " << setw(16)<< curr->type << "|" <<
+        //     endl;
+        //     curr = curr->next;
+        // }
+        while(1) {
+            clearScreen();
+            cout << "----- Transaction List (Page " << page+1 << " of " << totalPage << ") -----" << endl;
+            cout << setw(20) << left << "      Transaction ID" 
+                 << setw(20) << left << "     Item ID" 
+                 << setw(20) << left << "     User ID" 
+                 << setw(20) << left << "     Status" 
+                 << endl;
+            for(int i = 0; i < tr_PER_PAGES && curr != nullptr; i++){
+                for(int i = 0; i < 82; i++) cout << "-";
+                cout << endl;
+                cout << "| " << setw(20) << curr->transactionID << ""
+                    << "    " << setw(16)<< curr->itemID << ""
+                    << "    " << setw(16)<< curr->actorID << ""
+                    << "    " << setw(16)<< curr->type << "|" <<
+                endl;
+                curr = curr->next;
+            }
+            cout << "*********************************************************" << endl;
+            cout << "Navigation:  previous page '<-', next page '->', exit 'q'" << endl;
+            string input = readNav();
+            if(input == "exit"){
+                break;
+            }else if(input == "right" && page+1 < totalPage){
+                for(int i = 0; i < tr_PER_PAGES && curr != nullptr; i++){
+                    curr = curr->next;
+                }
+                page++;
+            }else if(input == "left" && page > 0){
+                curr = head;
+                for(int i = 0; i < (page-1) * tr_PER_PAGES; i++){
+                    curr = curr->next;
+                }
+                page--;
+            }
+        }
+    }
 };
 #endif

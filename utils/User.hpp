@@ -168,24 +168,24 @@ class UserList {
         loadUser.close();
     }
 
-    void writeUserDB() {
-        fstream file;
-        file.open(FILENAME, ofstream::app);
-        if (file.fail()) {
-            cout << "Failed to open a file " << FILENAME << endl;
-            return;
+    void saveUser(string filename){
+            ofstream savebookToFile(filename);
+            if(!savebookToFile){
+                cout << "File failed to open" << endl;
+                return;
+            }
+            UserNode* curr = head;
+            while(curr != nullptr){
+                savebookToFile << curr->userId<< ","
+                                << curr->userName << ","
+                                << curr->userPassword << ","
+                                << curr->userBirthday << endl;
+                                
+                curr = curr->next;
+            }
+            savebookToFile.close();
+            cout << "Save success" << endl;
         }
-
-        UserNode *temp = head;
-        while (temp != nullptr) {
-            file << temp->userId << ","
-                << temp->userName << ","
-                << temp->userPassword << ","
-                << temp->userBirthday << endl;
-            temp = temp->next;
-        }
-        file.close();
-    }
 
     bool searchAndCompare(string inputID, string inputPassword){
         UserNode* curr = head;
@@ -225,7 +225,7 @@ class UserList {
 
             cout << endl << "Use left arrow (<-) for previous page, "
                          << "Use right arrow (->) for next page, "
-                         << "and Esc for exit." << endl;
+                         << "and q for exit." << endl;
 
             string input = readNav();
             if(input == "exit"){
@@ -246,16 +246,7 @@ class UserList {
     }
 
     void add(string inputID, string inputName, string inputPassword, string inputBD){
-        UserNode* newNode = new UserNode(inputID, inputName, inputPassword, inputBD);
-        if(head == nullptr){
-            head = tail = newNode;
-        }else{
-            tail->next = newNode;
-            newNode->prev = tail;
-            tail = newNode;
-        }
-        length++;
-
+        insertBack(inputID, inputName, inputPassword, inputBD);
         cout << "User with ID: " << inputID << " has beed added success." << endl;
     }
 
@@ -273,10 +264,10 @@ class UserList {
                 cin.ignore(); // hamdle new line char
                 getline(cin, curr->userName);
                 cout << "Enter new User Password: ";
-                cin.ignore(); // hamdle new line char
+                //cin.ignore(); // hamdle new line char
                 getline(cin, curr->userPassword);
                 cout << "Enter new User Birthday (YYYY-MM-DD): ";
-                cin.ignore(); // hamdle new line char
+                 // hamdle new line char
                 getline(cin, curr->userBirthday);
 
                 cout << "User info updated success" << endl;

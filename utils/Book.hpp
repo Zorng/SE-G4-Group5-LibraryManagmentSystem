@@ -283,17 +283,18 @@ class BookList {
 
 
         //Update the availability of the book status
-        void updateBorrow(string inputItemID){
+        bool updateBorrow(string inputItemID){
             BookNode* current = head;
             while(current != nullptr){
                 if(current->bookID == inputItemID){
                     current->availability = false; //Mark it as unvailable
                     cout << "Book ID " << inputItemID << " has been marked as unavailable." << endl;
-                    return;
+                    return true;
                 }
                 current = current->next;
             }
             cout << "Book ID " << inputItemID << " not found in the list." << endl;
+            return false;
         }
 
     //Admin add book to booklist
